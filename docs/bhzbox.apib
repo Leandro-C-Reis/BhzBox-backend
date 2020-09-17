@@ -1,0 +1,307 @@
+FORMAT: 1A
+HOST: https://localhost:3333
+
+# BhzBox API
+
+API de fluxo de dados e processamento de compras.
+
+# Group API
+
+## Sobre [/]
+
+Receber requisições e enviar dados para uma pagina web BhzBox,
+processar os dados de cadastro, compras entre outros de diversos clientes e vendedores.
+Gerênciar banco de dados relacional e conexão entre clientes, vendedores e produtos,
+calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
+
+# Group Product
+
+## Listar todos os Produtos [/product/list]
+
+### Listagem [GET]
+
++ Response 200 (aplication/json)
+    + Attributes (array[Product])
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+## Listar produtos de um vendedor [/product/list/{salesmanId}]
+
++ Parameters
+    + salesmanId: 1 (number, required) -  ID do vendedor
+
+### Listagem [GET]
+
++ Response 200 (aplication/json)
+    + Attributes (array[Product])
+
++ Response 404 (aplication/json)
+    + Attributes (Error)
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+## Listar produtos em destaque [/product/list/highlighted]
+
++ Response 200 (aplication/json)
+    + Attributes (array[Product])
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+## Cadastrar Produtos [/product/register]
+
+### Cadastro [POST]
+
++ Request Cadastrar um produto no banco de dados
+    + Attributes (ProductUnr)
+
++ Response 201 (aplication/json)
+    + Attributes (Product)
+
++ Response 406 (aplication/json)
+    + Attributes (Error)
+
+## Deletar Produto [/product/delete/{id}]
+
++ Parameters
+    + id: 1 (number, required) -  Id do produto
+
+### Deletar [DELETE]
+
++ Response 204 (No-Content)
+
++ Response 404 (aplication/json)
+    + Attributes (Error)
+
+# Group User
+
+## Listar Usuarios [/user/list]
+
+### Listagem [GET]
+
++ Response 200 (aplication/json)
+    + Attributes (array[User])
+
++ Response 404 (aplication/json)
+    + Attributes (Error)
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+## Listar um usuario [/user/{id}]
+
++ Parameters
+    + id: 1 (number, required) - Id do usuario
+
+### Listagem [GET]
+
++ Response 200 (aplication/json)
+    + Attributes (User)
+
++ Response 404 (aplication/json)
+    + Attributes (Error)
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+## Cadastrar usuario [/user/register]
+
+### Cadastro [POST]
+
++ Request Cadastrar um usuario no banco de dados
+    + Attributes (UserUnr)
+
++ Response 201 (aplication/json)
+    + Attributes (User)
+
++ Response 406 (aplication/json)
+    + Attributes (Error)
+
+## Modificar dados do usuario [/user/update/{id}]
+
++ Parameters
+    + id: 1 (number, required) -  Id do usuario
+
+### Modificar [PUT]
+
++ Request Modificar dados do usuario
+    + Attributes (UserUnr)
+
++ Response 200 (aplication/json)
+    + Attributes (User)
+
++ Response 404 (aplication/json)
+    + Attributes (Error)
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+## Deletar usuario [/user/delete/{id}]
+
++ Parameters
+    + id: 1 (number, required) -  Id do usuario
+
+### Deletar [DELETE]
+
++ Response 204 (No-Content)
+
++ Response 404 (aplication/json)
+    + Attributes (Error)
+
+# Group Salesman
+
+## Listar Vendedores [/salesman/list]
+
+### Listagem [GET]
+
++ Response 200 (aplication/json)
+    + Attributes (array[Salesman])
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+## Lista um vendedor [/salesman/{id}]
+
+### Listagem [GET]
+
++ Response 200 (aplication/)
+    + Attributes (Salesman)
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+## Cadastrar um vendedor [/salesman/register]
+
+### Cadastro [POST]
+
++ Request Cadastrar vendedor no banco de dados
+    + Attributes (SalesmanUnr)
+
++ Response 200 (aplication/json)
+    + Attributes (Salesman)
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+## Modificar dados do vendedor [/salesman/update/{id}]
+
++ Parameters
+    + id: 1 (number, required) -  Id do Vendedor
+
+### Modificar [PUT]
+
++ Request Modificar dados do vendedor no banco de dados
+    + Attributes (SalesmanUnr)
+
++ Response 200 (aplication/json)
+    + Attributes (Salesman)
+
++ Response 404 (aplication/json)
+    + Attributes (Error)
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+## Deletar um vendedor [/salesman/delete/{id}]
+
++ Parameters
+    + id: 1 (number, required) - Id do vendedor
+
+### Deletar [DELETE]
+
++ Response 204 (No-Content)
+
++ Response 404 (aplication/json)
+    + Attributes (Error)
+
+# Group transactions
+
+## Efetuar um pedido [/transaction/purchase]
+
+### Criar pedido [POST]
+
++ Request cadastrar pedido no banco de dados
+    + Attributes (PurchaseUnr)
+
++ Response 202 (aplication/json)
+    + Attributes (Purchase)
+
++ Response 404 (aplication/json)
+    + Attributes (Error)
+
++ Response 400 (aplication/json)
+    + Attributes (Error)
+
+# Data Structures
+
+## Product (ProductUnr)
++ id: 1 (number, required) - Id do produto
+
+## ProductUnr (object)
++ name (string) - Nome do produto
++ imageURL (array[string]) - Uma ou mais imagens do produto
++ description (string) - Descrição
++ value (string) - Valor
++ stars (array[number]) - Avaliações do produto
++ salesmanId (number) - Id do vendedor
++ stock (number) - Quantidade disponíveis em estoque
+
+## User (UserUnr)
++ id: 1 (number, required) - Id do usuario
+
+## UserUnr (object)
++ name (string) - Nome do usuario
++ email (string, required) - Email do usuario
++ password (string, required) - Password doSenha do usuario
++ birth date (string) -  Data de nascimento do usuario
++ register date (string) - Data de cadastro do usuario
++ cpf (string) - CPF do usuario
++ cellphone (string) - Telefone do usuario
++ adress (array[Adress]) - Um ou mais endereços do usuario
++ purchase (array[Product]) - Pedidos do usuario
++ cart (array[Product]) - Carrinho do usuario
+
+## Salesman (SalesmanUnr)
++ id: 1 (number, required) - Id do vendedor
+
+## SalesmanUnr (object)
++ name (string) - Nome do vendedor
++ email (string, required) - Email do vendedor
++ password (string, required) - Password do vendedor
++ cellphone (string) - Telefone do vendedor
++ address (array[Adress]) - Endereço do vendedor
++ cpf (string) - CPF do vendedor
++ sales (array[Sale]) - Vendas do vendedor
+
+## Purchase (object)
++ payment (object) - Comprovante de pagamento
++ send (object) - Comprovante de envio
++ receivement (object) - Comprovanre de recebimento
++ tracking code (string) - Código de rastreio
+
+## PurchaseUnr (object)
++ userId: 1 (number, required) - Id do usuario
++ salesmanId: 1 (number, required) - Id do vendedor
++ uniqValue (number) - Valor unitario
++ freightValue (number) - Valor do frete
++ totalValue (number) - Valor total
++ adress (Adress) - Endereço de entrega
++ method (number) - Metodo de pagamento
+
+## Adress (object)
++ street (string) - Rua
++ number (number) - Numero
++ district (string) - Bairro
++ city (string) - Cidade
++ uf (string) - UF
++ cep (number) -  CEP
+
+## Sale (object)
++ sale (object) - Comprovante de venda
++ send (object) - Comprovante de envio
+
+## Error (object)
++ code: 400 (number) - Status code
++ message: Error (string) - Mensagem do status
