@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://localhost:3333
 
-# BhzBox API
+# BoxVendas API
 
 API de fluxo de dados e processamento de compras.
 
@@ -9,7 +9,7 @@ API de fluxo de dados e processamento de compras.
 
 ## Sobre [/]
 
-Receber requisições e enviar dados para uma pagina web BhzBox,
+Receber requisições e enviar dados para uma pagina web BoxVendas,
 processar os dados de cadastro, compras entre outros de diversos clientes e vendedores.
 Gerênciar banco de dados relacional e conexão entre clientes, vendedores e produtos,
 calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
@@ -18,46 +18,68 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 ## Listar todos os Produtos [/product/list]
 
-### Listagem [GET]
+### Listar Todos [GET]
 
 + Response 200 (aplication/json)
     + Attributes (array[Product])
 
-+ Response 400 (aplication/json)
-    + Attributes (Error)
-
-## Listar produtos de um vendedor [/product/list/{salesmanId}]
+## Listar produtos de um vendedor [/product/salesman/{id}]
 
 + Parameters
-    + salesmanId: 1 (number, required) -  ID do vendedor
+    + id: 1 (number, required) -  ID do vendedor
 
-### Listagem [GET]
+### Listar por vendedor [GET]
 
 + Response 200 (aplication/json)
     + Attributes (array[Product])
 
-+ Response 404 (aplication/json)
++ Response 406 (aplication/json)
     + Attributes (Error)
 
-+ Response 400 (aplication/json)
+## Listar um produto [/product/list/{id}]
+
++ Parameters
+    + id: 1 (number, required) -  Id do produto
+
+### Listar um [GET]
+
++ Response 200 (aplication/json)
+    + Attributes (Product)
+
++ Response 406 (aplication/json)
     + Attributes (Error)
 
 ## Listar produtos em destaque [/product/list/highlighted]
 
+### Listar destaques [GET]
+
 + Response 200 (aplication/json)
     + Attributes (array[Product])
 
-+ Response 400 (aplication/json)
-    + Attributes (Error)
-
 ## Cadastrar Produtos [/product/register]
 
-### Cadastro [POST]
+### Cadastrar [POST]
 
 + Request Cadastrar um produto no banco de dados
     + Attributes (ProductUnr)
 
 + Response 201 (aplication/json)
+    + Attributes (Product)
+
++ Response 406 (aplication/json)
+    + Attributes (Error)
+
+## Modificar um produto [/product/update/{id}]
+
++ Parameters
+    + id: 1 (number, required) -  Id do produto
+
+### Modificar [PUT]
+
++ Request Modificar dados do usuario
+    + Attributes (ProductUnr)
+
++ Response 200 (aplication/json)
     + Attributes (Product)
 
 + Response 406 (aplication/json)
@@ -72,14 +94,14 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 + Response 204 (No-Content)
 
-+ Response 404 (aplication/json)
++ Response 406 (aplication/json)
     + Attributes (Error)
 
 # Group User
 
 ## Listar Usuarios [/user/list]
 
-### Listagem [GET]
+### Listar Todos [GET]
 
 + Response 200 (aplication/json)
     + Attributes (array[User])
@@ -90,12 +112,12 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 400 (aplication/json)
     + Attributes (Error)
 
-## Listar um usuario [/user/{id}]
+## Listar um usuario [/user/list/{id}]
 
 + Parameters
     + id: 1 (number, required) - Id do usuario
 
-### Listagem [GET]
+### Listar um [GET]
 
 + Response 200 (aplication/json)
     + Attributes (User)
@@ -108,7 +130,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 ## Cadastrar usuario [/user/register]
 
-### Cadastro [POST]
+### Cadastrar [POST]
 
 + Request Cadastrar um usuario no banco de dados
     + Attributes (UserUnr)
@@ -127,7 +149,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 ### Modificar [PUT]
 
 + Request Modificar dados do usuario
-    + Attributes (UserUnr)
+    + Attributes (User)
 
 + Response 200 (aplication/json)
     + Attributes (User)
@@ -154,7 +176,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 ## Listar Vendedores [/salesman/list]
 
-### Listagem [GET]
+### Listar Todos [GET]
 
 + Response 200 (aplication/json)
     + Attributes (array[Salesman])
@@ -162,9 +184,12 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 400 (aplication/json)
     + Attributes (Error)
 
-## Lista um vendedor [/salesman/{id}]
+## Listar um vendedor [/salesman/list/{id}]
 
-### Listagem [GET]
++ Parameters
+    + id: 1 (number, required) -  Id do vendedor
+
+### Listar um [GET]
 
 + Response 200 (aplication/)
     + Attributes (Salesman)
@@ -174,7 +199,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 ## Cadastrar um vendedor [/salesman/register]
 
-### Cadastro [POST]
+### Cadastrar [POST]
 
 + Request Cadastrar vendedor no banco de dados
     + Attributes (SalesmanUnr)
@@ -216,7 +241,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 404 (aplication/json)
     + Attributes (Error)
 
-# Group transactions
+# Group Transactions
 
 ## Efetuar um pedido [/transaction/purchase]
 
@@ -238,30 +263,30 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 ## Product (ProductUnr)
 + id: 1 (number, required) - Id do produto
++ stars (array[number]) - Avaliações do produto
 
 ## ProductUnr (object)
 + name (string) - Nome do produto
 + imageURL (array[string]) - Uma ou mais imagens do produto
 + description (string) - Descrição
 + value (string) - Valor
-+ stars (array[number]) - Avaliações do produto
 + salesmanId (number) - Id do vendedor
 + stock (number) - Quantidade disponíveis em estoque
 
 ## User (UserUnr)
 + id: 1 (number, required) - Id do usuario
++ birth date (string) -  Data de nascimento do usuario
++ cpf (string) - CPF do usuario
++ cellphone (string) - Telefone do usuario
++ address (array[Address]) - Um ou mais endereços do usuario
++ purchase (array[Purchase]) - Pedidos do usuario
++ cart (array[Product]) - Carrinho do usuario
 
 ## UserUnr (object)
 + name (string) - Nome do usuario
 + email (string, required) - Email do usuario
 + password (string, required) - Password doSenha do usuario
-+ birth date (string) -  Data de nascimento do usuario
 + register date (string) - Data de cadastro do usuario
-+ cpf (string) - CPF do usuario
-+ cellphone (string) - Telefone do usuario
-+ adress (array[Adress]) - Um ou mais endereços do usuario
-+ purchase (array[Product]) - Pedidos do usuario
-+ cart (array[Product]) - Carrinho do usuario
 
 ## Salesman (SalesmanUnr)
 + id: 1 (number, required) - Id do vendedor
@@ -271,11 +296,11 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + email (string, required) - Email do vendedor
 + password (string, required) - Password do vendedor
 + cellphone (string) - Telefone do vendedor
-+ address (array[Adress]) - Endereço do vendedor
++ address (array[Address]) - Endereço do vendedor
 + cpf (string) - CPF do vendedor
 + sales (array[Sale]) - Vendas do vendedor
 
-## Purchase (object)
+## Purchase (PurchaseUnr)
 + payment (object) - Comprovante de pagamento
 + send (object) - Comprovante de envio
 + receivement (object) - Comprovanre de recebimento
@@ -287,10 +312,10 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + uniqValue (number) - Valor unitario
 + freightValue (number) - Valor do frete
 + totalValue (number) - Valor total
-+ adress (Adress) - Endereço de entrega
++ address (Address) - Endereço de entrega
 + method (number) - Metodo de pagamento
 
-## Adress (object)
+## Address (object)
 + street (string) - Rua
 + number (number) - Numero
 + district (string) - Bairro
