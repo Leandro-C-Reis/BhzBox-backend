@@ -106,12 +106,6 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 200 (aplication/json)
     + Attributes (array[User])
 
-+ Response 404 (aplication/json)
-    + Attributes (Error)
-
-+ Response 400 (aplication/json)
-    + Attributes (Error)
-
 ## Listar um usuario [/user/list/{id}]
 
 + Parameters
@@ -122,10 +116,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 200 (aplication/json)
     + Attributes (User)
 
-+ Response 404 (aplication/json)
-    + Attributes (Error)
-
-+ Response 400 (aplication/json)
++ Response 406 (aplication/json)
     + Attributes (Error)
 
 ## Cadastrar usuario [/user/register]
@@ -154,10 +145,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 200 (aplication/json)
     + Attributes (User)
 
-+ Response 404 (aplication/json)
-    + Attributes (Error)
-
-+ Response 400 (aplication/json)
++ Response 406 (aplication/json)
     + Attributes (Error)
 
 ## Deletar usuario [/user/delete/{id}]
@@ -169,7 +157,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 + Response 204 (No-Content)
 
-+ Response 404 (aplication/json)
++ Response 406 (aplication/json)
     + Attributes (Error)
 
 # Group Salesman
@@ -275,7 +263,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 ## User (UserUnr)
 + id: 1 (number, required) - Id do usuario
-+ birth date (string) -  Data de nascimento do usuario
++ birth_date (string) -  Data de nascimento do usuario
 + cpf (string) - CPF do usuario
 + cellphone (string) - Telefone do usuario
 + address (array[Address]) - Um ou mais endereços do usuario
@@ -286,7 +274,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + name (string) - Nome do usuario
 + email (string, required) - Email do usuario
 + password (string, required) - Password doSenha do usuario
-+ register date (string) - Data de cadastro do usuario
++ register_date (string) - Data de cadastro do usuario
 
 ## Salesman (SalesmanUnr)
 + id: 1 (number, required) - Id do vendedor
@@ -304,14 +292,14 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + payment (object) - Comprovante de pagamento
 + send (object) - Comprovante de envio
 + receivement (object) - Comprovanre de recebimento
-+ tracking code (string) - Código de rastreio
++ tracking_code (string) - Código de rastreio
 
 ## PurchaseUnr (object)
 + userId: 1 (number, required) - Id do usuario
 + salesmanId: 1 (number, required) - Id do vendedor
-+ uniqValue (number) - Valor unitario
-+ freightValue (number) - Valor do frete
-+ totalValue (number) - Valor total
++ uniq_value (number) - Valor unitario
++ freight_value (number) - Valor do frete
++ total_value (number) - Valor total
 + address (Address) - Endereço de entrega
 + method (number) - Metodo de pagamento
 
