@@ -28,7 +28,6 @@ describe('User tests with valid params', () => {
             name: "name",
             email: "email",
             password: "password",
-            register_date: "02/12/3943"
         });
 
         expect(response.status).toBe(201);

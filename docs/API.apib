@@ -160,7 +160,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 406 (aplication/json)
     + Attributes (Error)
 
-# Group Salesman
+# Group Saller
 
 ## Listar Vendedores [/salesman/list]
 
@@ -168,9 +168,6 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 + Response 200 (aplication/json)
     + Attributes (array[Salesman])
-
-+ Response 400 (aplication/json)
-    + Attributes (Error)
 
 ## Listar um vendedor [/salesman/list/{id}]
 
@@ -182,7 +179,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 200 (aplication/)
     + Attributes (Salesman)
 
-+ Response 400 (aplication/json)
++ Response 406 (aplication/json)
     + Attributes (Error)
 
 ## Cadastrar um vendedor [/salesman/register]
@@ -195,7 +192,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 200 (aplication/json)
     + Attributes (Salesman)
 
-+ Response 400 (aplication/json)
++ Response 406 (aplication/json)
     + Attributes (Error)
 
 ## Modificar dados do vendedor [/salesman/update/{id}]
@@ -211,10 +208,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 200 (aplication/json)
     + Attributes (Salesman)
 
-+ Response 404 (aplication/json)
-    + Attributes (Error)
-
-+ Response 400 (aplication/json)
++ Response 406 (aplication/json)
     + Attributes (Error)
 
 ## Deletar um vendedor [/salesman/delete/{id}]
@@ -226,7 +220,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 + Response 204 (No-Content)
 
-+ Response 404 (aplication/json)
++ Response 406 (aplication/json)
     + Attributes (Error)
 
 # Group Transactions
@@ -241,10 +235,7 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 + Response 202 (aplication/json)
     + Attributes (Purchase)
 
-+ Response 404 (aplication/json)
-    + Attributes (Error)
-
-+ Response 400 (aplication/json)
++ Response 406 (aplication/json)
     + Attributes (Error)
 
 # Data Structures
@@ -278,15 +269,16 @@ calcular endereço. Api é desenvolvida em Typescript e executada em NodeJS.
 
 ## Salesman (SalesmanUnr)
 + id: 1 (number, required) - Id do vendedor
++ cpf (string) - CPF do vendedor
++ cellphone (string) - Telefone do vendedor
++ birth_date (string) -  Data de nascimento do usuario
++ address (array[Address]) - Endereço do vendedor
++ sales (array[Sale]) - Vendas do vendedor
 
 ## SalesmanUnr (object)
 + name (string) - Nome do vendedor
 + email (string, required) - Email do vendedor
 + password (string, required) - Password do vendedor
-+ cellphone (string) - Telefone do vendedor
-+ address (array[Address]) - Endereço do vendedor
-+ cpf (string) - CPF do vendedor
-+ sales (array[Sale]) - Vendas do vendedor
 
 ## Purchase (PurchaseUnr)
 + payment (object) - Comprovante de pagamento

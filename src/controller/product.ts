@@ -1,0 +1,40 @@
+import { Request, Response } from 'express';
+
+class ProductController {
+    async index(request: Request, response: Response)
+    {
+        
+    }
+
+    async show(request: Request, response: Response)
+    {
+
+    }
+
+    async show_of_salesman(request: Request, response: Response)
+    {
+
+    }
+
+    async show_highlighted(request: Request, response: Response)
+    {
+        
+    }
+
+    async create(request: Request, response: Response)
+    {
+
+    }
+
+    async update(request: Request, response: Response)
+    {
+
+    }
+
+    async destroy(request: Request, response: Response)
+    {
+
+    }
+}
+
+export default ProductController;
