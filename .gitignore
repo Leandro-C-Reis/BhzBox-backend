@@ -1,3 +1,5 @@
 node_modules/
 docs/index.html
 __tests__/coverage/
+.env.test
+.env
