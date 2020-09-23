@@ -60,20 +60,20 @@ describe('User tests with valid params', () => {
 });
 
 describe('User tests with invalid params', () => {
-    it('Should list a unique user', async () => {
+    it('Should not list a unique user', async () => {
         const response : any = await request(app).get('/user/list/?id=0');
 
         expect(response.status).toBe(406);
     });
 
-    it('Should register a user', async () => {
+    it('Should not register a user', async () => {
         const response : any = await request(app).post('/user/register')
         .send({});
 
         expect(response.status).toBe(406);
     });
 
-    it('Should update a user', async () => {
+    it('Should not update a user', async () => {
         const response : any = await request(app).put('/user/update/?id=0')
         .send({
             id: 1, 
@@ -92,7 +92,7 @@ describe('User tests with invalid params', () => {
         expect(response.status).toBe(406)
     });
 
-    it('Should delete a user', async () => {
+    it('Should not delete a user', async () => {
         const response : any = await request(app).delete('/user/delete/?id=1');
 
         expect(response.status).toBe(406);
