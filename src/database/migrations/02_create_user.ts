@@ -3,6 +3,7 @@ import Knex from 'knex';
 export async function up(knex: Knex) {
     return knex.schema.createTable('users', table => {
         table.increments('id').primary();
+        table.integer('integration_id').unsigned();
         table.string('name').notNullable();
         table.string('email').notNullable();
         table.string('password').notNullable();
