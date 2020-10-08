@@ -40,7 +40,7 @@ class UserController {
         await trx('users').insert(data);
 
         trx.commit();
-        return response.status(200).json();
+        return response.status(201).json();
     }
 
     async update(request: Request, response: Response)
@@ -60,10 +60,16 @@ class UserController {
             error: 406,
             message: 'Invalid id'
         });
+        const trx = await database.transaction();
+
+        const existId = await trx('users').select('id').where({ id });
+        if (!existId || existId.length === 0) return response.status(406).json({
+            code: 406,
+            message: "User id not exist"
+        });
 
         const data = { name, email, password, birth_date, cpf,cellphone, address_id }
 
-        const trx = await database.transaction();
         const updated = await trx('users').where({ id }).update(data);
         
         if (!updated) return response.status(406).json({
@@ -90,7 +96,7 @@ class UserController {
 
         trx.commit();
 
-        return response.status(200).json();
+        return response.status(204).json();
     }
 }
 

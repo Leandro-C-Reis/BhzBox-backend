@@ -26,6 +26,17 @@ class ProductController {
     async show_of_salesman(request: Request, response: Response)
     {
         const { id } = request.params;
+        if (!id) return response.status(406).json({
+            error: 406,
+            message: 'product not founded'
+        });
+
+        const existId = await database('salespeople').select('id').where({ id });
+        if (!existId || existId.length == 0) return response.status(406).json({
+            error: 406,
+            message: 'Salesman Id not exist'
+        });
+
         const all = await database.select('*').from('products'); 
         const products = all.filter(element => element.salesman_id == id);
         
@@ -65,7 +76,7 @@ class ProductController {
         await trx('products').insert(data);
 
         trx.commit();
-        return response.status(200).json();
+        return response.status(201).json();
     }
 
     async update(request: Request, response: Response)
@@ -73,6 +84,14 @@ class ProductController {
         const { id } = request.params;
         
         if (!id) return response.status(406).json({
+            error: 406,
+            message: 'id is missing'
+        });
+        
+        const trx = await database.transaction(); 
+        
+        const existId = await trx('products').select('id').where({ id });
+        if (!existId || existId.length == 0) return response.status(406).json({
             error: 406,
             message: 'Invalid id'
         });
@@ -83,17 +102,20 @@ class ProductController {
             value, 
             stock,
         } = request.body;
-
-        const data = { name, description, value, stock};
-        const trx = await database.transaction();
+        
+        const data = { name, description, value, stock };
         const updated = await trx('products').where({ id }).update(data);
         
-        if (!updated) return response.status(406).json({
-            error: 406,
-            message: 'product not founded'
-        });
+        if (!updated)
+        {
+            await trx.rollback();
+            return response.status(406).json({
+                error: 406,
+                message: 'product not founded'
+            });
+        }
 
-        trx.commit();
+        await trx.commit();
         return response.status(200).json();
     }
 
@@ -112,7 +134,7 @@ class ProductController {
 
         trx.commit();
 
-        return response.status(200).json();
+        return response.status(204).json();
     }
 }
 

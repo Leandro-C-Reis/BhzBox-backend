@@ -39,8 +39,8 @@ class SalesmanController {
         const data = { name, email, password, register_date };
         await trx('salespeople').insert(data);
 
-        trx.commit();
-        return response.status(200).json();
+        await trx.commit();
+        return response.status(201).json();
     }
 
     async update(request: Request, response: Response)
@@ -60,10 +60,17 @@ class SalesmanController {
             error: 406,
             message: 'Invalid id'
         });
+        const trx = await database.transaction();
+        
+        const existId = await trx('salespeople').select('id').where({ id });
+
+        if (!existId || existId.length === 0) return response.status(406).json({
+            code: 406,
+            message: "Salesman id not exist"
+        });
 
         const data = { name, email, password, birth_date, cpf,cellphone, address_id }
 
-        const trx = await database.transaction();
         const updated = await trx('salespeople').where({ id }).update(data);
         
         if (!updated) return response.status(406).json({
@@ -71,15 +78,25 @@ class SalesmanController {
             message: 'Salesman not founded'
         });
 
-        trx.commit();
+        await trx.commit();
         return response.status(200).json();
     }
 
     async destroy(request: Request, response: Response)
     {
         const { id } = request.params;
+        if (!id) return response.status(406).json({
+            code: 406,
+            message: "Id is Missing"
+        });
 
         const trx = await database.transaction();
+
+        const existId = await trx('salespeople').select('id').where({ id });
+        if (!existId || existId.length === 0) return response.status(406).json({
+            code: 406,
+            message: "Salesman id not exist"
+        });
 
         const deleted = await trx('salespeople').where({ id }).del();
         
@@ -88,9 +105,9 @@ class SalesmanController {
             message: 'Invalid id'
         });
 
-        trx.commit();
+        await trx.commit();
 
-        return response.status(200).json();
+        return response.status(204).json();
     }
 }
 

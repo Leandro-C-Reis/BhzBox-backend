@@ -53,11 +53,11 @@ class AddressController
     {
         const { cep, uf, city, district, street, number, salesman_id, user_id } = request.body;
 
-        if (!salesman_id && !user_id) response.status(406).json({
+        if (!salesman_id && !user_id) return response.status(406).json({
             code: 406,
             message: "Credentials is missing"
         });
-        if (salesman_id && user_id) response.status(406).json({
+        if (salesman_id && user_id) return response.status(406).json({
             code: 406,
             message: "Can not accept two types of clients"
         });
@@ -73,10 +73,14 @@ class AddressController
         
         const created = await trx('address').insert(data).returning('id');
 
-        if (!created || created.length == 0) return response.status(406).json({
-            code: 406,
-            message: "Address not created"
-        });
+        if (!created || created.length == 0) 
+        {
+            await trx.rollback();
+            return response.status(406).json({
+                code: 406,
+                message: "Address not created"
+            });
+        }
         
         const address_id = created[0];
 
@@ -90,7 +94,7 @@ class AddressController
         });
 
         await trx.commit();
-        response.status(200).json(address_id);
+        return response.status(200).json(address_id);
     }
 
     async update(request : Request, response : Response)

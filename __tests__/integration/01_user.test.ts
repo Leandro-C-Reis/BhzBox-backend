@@ -17,7 +17,7 @@ describe('User tests with valid params', () => {
     });
 
     it('Should list a unique user', async () => {
-        const response : any = await request(app).get('/user/list/?id=1');
+        const response : any = await request(app).get('/user/list/1');
 
         expect(response.status).toBe(200);
     });
@@ -34,14 +34,13 @@ describe('User tests with valid params', () => {
     });
 
     it('Should update a user', async () => {
-        const response : any = await request(app).put('/user/update/?id=1')
+        const response : any = await request(app).put('/user/update/1')
         .send({
             id: 1, 
             name: "name",
             email: "email",
             password: "password",
-            register_date: "xx/xx/xx",
-            birth_date: "xx/xx/xx",
+            birth_date: "0001-01-01",
             cpf: "123123123",
             cellphone: "123123123",
             purchase: [1, 2],
@@ -53,7 +52,7 @@ describe('User tests with valid params', () => {
     });
 
     it('Should delete a user', async () => {
-        const response : any = await request(app).delete('/user/delete/?id=1');
+        const response : any = await request(app).delete('/user/delete/2');
 
         expect(response.status).toBe(204);
     });
@@ -61,7 +60,7 @@ describe('User tests with valid params', () => {
 
 describe('User tests with invalid params', () => {
     it('Should not list a unique user', async () => {
-        const response : any = await request(app).get('/user/list/?id=0');
+        const response : any = await request(app).get('/user/list/0');
 
         expect(response.status).toBe(406);
     });
@@ -74,14 +73,14 @@ describe('User tests with invalid params', () => {
     });
 
     it('Should not update a user', async () => {
-        const response : any = await request(app).put('/user/update/?id=0')
+        const response : any = await request(app).put('/user/update/0')
         .send({
             id: 1, 
             name: "name",
             email: "email",
             password: "password",
-            register_date: "xx/xx/xx",
-            birth_date: "xx/xx/xx",
+            register_date: "0001-01-01",
+            birth_date: "0001-01-01",
             cpf: "123123123",
             cellphone: "123123123",
             purchase: [1, 2],
@@ -93,7 +92,7 @@ describe('User tests with invalid params', () => {
     });
 
     it('Should not delete a user', async () => {
-        const response : any = await request(app).delete('/user/delete/?id=1');
+        const response : any = await request(app).delete('/user/delete/0');
 
         expect(response.status).toBe(406);
     });

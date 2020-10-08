@@ -11,7 +11,7 @@ export async function up(knex : Knex) {
         table.string('tracking_code');
         table.string('payment_status').notNullable();
         table.string('status').notNullable();
-        table.date('creating_date').notNullable();
+        table.date('register_date').notNullable();
         table.integer('integration_id').unsigned();
         table.integer('product_id').unsigned().notNullable();
         table.foreign('product_id').references('id').inTable('products');
