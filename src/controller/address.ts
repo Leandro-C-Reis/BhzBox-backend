@@ -15,8 +15,8 @@ class AddressController
 
         const data = await database.select('*').from('address').where({ id });
 
-        if (data.length == 0) return response.status(406).json({
-            code: "406",
+        if (data.length == 0) return response.status(404).json({
+            code: "404",
             message: "Address not founded"
         });
 
@@ -32,6 +32,7 @@ class AddressController
             code: 404,
             message: "Addresses not founded"
         });
+        // { code here}
 
         response.status(200).json(data);
     }
@@ -100,10 +101,23 @@ class AddressController
     async update(request : Request, response : Response)
     {
         const { id } = request.params;
+        
+        if (!id) return response.status(406).json({
+            code: 406,
+            message: "id is missing"
+        });
+        
         const { cep, uf, city, district, street, number } = request.body;
         const data =  { cep, uf, city, district, street, number, };
         
         const trx = await database.transaction();
+        
+        const existId = await trx('address').select('id').where({ id });
+        if (!existId || existId.length == 0) return response.status(404).json({
+            code: 404,
+            message: "address not founded with this id"
+        });
+
         const updated = await trx('address').where({ id }).update(data);
 
         if (!updated)
@@ -122,7 +136,21 @@ class AddressController
     async destroy(request : Request, response : Response)
     {
         const { id } = request.params;
+        if (!id) return response.status(406).json({
+            code: 406,
+            message: "id is missing"
+        });
+
         const trx = await database.transaction();
+
+        const existId = await trx('address').select('id').where({ id });
+        if (!existId || existId.length == 0) return response.status(404).json({
+            code: 404,
+            message: "address not founded with this id"
+        });
+
+        await trx('user_address').where('address_id', id).del();
+        await trx('salesman_address').where('address_id', id).del();
 
         const destroyed = await trx('address').where({ id }).del();
         if (!destroyed)
@@ -135,7 +163,7 @@ class AddressController
         }
 
         await trx.commit();
-        return response.status(200).json();
+        return response.status(204).json();
     }
 }
 

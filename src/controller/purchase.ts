@@ -20,8 +20,8 @@ class PurchaseController
 
         const data = await database('purchases').select('*').where({ id });
 
-        if (data.length == 0) return response.status(406).json({
-            code: 406,
+        if (data.length == 0) return response.status(404).json({
+            code: 404,
             message: "purchase not founded"
         });
 
@@ -37,8 +37,8 @@ class PurchaseController
         });
         
         const data = await database('purchases').select('*').where('user_id', id);
-        if (data.length == 0) return response.status(406).json({
-            code: 406,
+        if (data.length == 0) return response.status(404).json({
+            code: 404,
             message: "User does not exist or does not haves a purchase"
         });
 
@@ -68,7 +68,7 @@ class PurchaseController
             message: 'Credentials is missing'
         });
         const now = new Date;
-        const creating_date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`; 
+        const register_date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`; 
         const trx = await database.transaction();
         
         const userExist = (await trx('users').select('id').where({ id: user_id })).length;
@@ -82,7 +82,7 @@ class PurchaseController
 
         const isAddress = await trx('user_address').select('user_id').where('address_id', address_id);
 
-        if (isAddress[0].user_id != user_id) return response.status(406).json({
+        if (isAddress.length == 0) return response.status(406).json({
             code: 406,
             message: "This address does not correspond to the user"
         });
@@ -103,7 +103,8 @@ class PurchaseController
             uniq_value,
             total_value,
             integration_id: null,
-            creating_date
+            register_date,
+            status: 'payment in process'
         }
 
         const created = await trx('purchases').insert(data);
