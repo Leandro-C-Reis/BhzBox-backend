@@ -5,14 +5,12 @@ export async function up(knex: Knex) {
         table.increments('id').primary();
         table.integer('integration_id').unsigned();
         table.string('name').notNullable();
-        table.string('email').notNullable();
+        table.string('email').notNullable().unique();
         table.string('password').notNullable();
         table.date('register_date').notNullable();
         table.date('birth_date');
-        table.string('cpf');
+        table.string('cpf').unique();
         table.string('cellphone');
-        table.integer('address_id').unsigned();
-        table.foreign('address_id').references('id').inTable('address');
     });
 }
 
