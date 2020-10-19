@@ -41,7 +41,14 @@ describe('Products tests with valid params', () => {
             description: "description",
             value: 1,
             stock: 1,
-            salesman_id: 1
+            salesman_id: 1,
+            formato: 1,
+            peso: '1',
+            comprimento: 20,
+            altura: 2,
+            largura: 20,
+            diametro: 0,
+            address_id: 2,
         });
         
         expect(response.status).toBe(201);

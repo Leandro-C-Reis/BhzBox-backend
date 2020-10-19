@@ -8,8 +8,18 @@ export async function up(knex: Knex) {
         table.date('register_date').notNullable();
         table.float('value').notNullable();
         table.integer('stock').notNullable();
+
+        table.integer('address_id').unsigned().notNullable();
+        table.foreign('address_id').references('id').inTable('address');
         table.integer('salesman_id').unsigned().notNullable();
         table.foreign('salesman_id').references('id').inTable('salespeople');
+        
+        table.integer('formato').notNullable().unsigned();
+        table.string('peso').notNullable();
+        table.float('comprimento').notNullable().unsigned();
+        table.float('altura').notNullable().unsigned();
+        table.float('largura').notNullable().unsigned();
+        table.float('diametro').notNullable().unsigned();
     });
 }
 

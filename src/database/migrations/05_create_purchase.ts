@@ -6,12 +6,16 @@ export async function up(knex : Knex) {
         table.float('uniq_value').notNullable();
         table.float('freight_value');
         table.float('total_value').notNullable();
+        
+        table.date('register_date').notNullable();
+        table.string('servico').notNullable();
+
         table.boolean('send').notNullable();
         table.boolean('receivment').notNullable();
         table.string('tracking_code');
         table.string('payment_status').notNullable();
         table.string('status').notNullable();
-        table.date('register_date').notNullable();
+
         table.integer('integration_id').unsigned();
         table.integer('product_id').unsigned().notNullable();
         table.foreign('product_id').references('id').inTable('products');

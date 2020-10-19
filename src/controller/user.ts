@@ -72,12 +72,16 @@ class UserController {
 
         const updated = await trx('users').where({ id }).update(data);
         
-        if (!updated) return response.status(406).json({
-            error: 406,
-            message: 'User not founded'
-        });
+        if (!updated)
+        {
+            await trx.rollback();
+            return response.status(406).json({
+                error: 406,
+                message: 'User not founded'
+            });
+        }
 
-        trx.commit();
+        await trx.commit();
         return response.status(200).json();
     }
 

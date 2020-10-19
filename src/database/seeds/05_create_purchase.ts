@@ -13,7 +13,8 @@ export async function seed(knex : Knex)
             send: false,
             receivment: false,
             status: "inprogress",
-            register_date: "0001-01-01"
+            register_date: "0001-01-01",
+            servico: '04510'
         }
     ]);
 }

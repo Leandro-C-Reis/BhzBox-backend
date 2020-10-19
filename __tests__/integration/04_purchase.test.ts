@@ -45,10 +45,11 @@ describe('Purchase tests with valid params', () => {
             user_id: 1,
             product_id: 1,
             address_id: 1,
-            payment_status: "card"
+            payment_status: "card",
+            servico: '04510'
         }
 
-        const response = await await request(app).post('/purchase/create').send(data);
+        const response : any = await request(app).post('/purchase/create').send(data);
 
         expect(response.status).toBe(200)
     });

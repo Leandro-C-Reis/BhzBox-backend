@@ -38,7 +38,7 @@ describe('Salesman tests with valid params', () => {
         .send({
             id: 1, 
             name: "name",
-            email: "email",
+            email: "email2",
             password: "password",
             birth_date: "0001-01-01",
             cpf: "123123123",

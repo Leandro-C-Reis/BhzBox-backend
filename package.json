@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev src/server.ts --ignore__tests__",
+    "dev": "ts-node-dev src/server.ts --ignore__tests__ --transpile-only --ignore-watch node_moduless",
     "pretest": "NODE_ENV=test knex migrate:rollback --all && NODE_ENV=test knex --knexfile knexfile.ts migrate:latest ",
     "test": "NODE_ENV=test knex --knexfile knexfile.ts seed:run && NODE_ENV=test jest --runInBand --detectOpenHandles",
     "posttest": "NODE_ENV=test knex migrate:rollback --all",
@@ -25,7 +25,6 @@
     "knex": "^0.21.5",
     "mysql2": "^2.2.5",
     "pg": "^8.4.0",
-    "ts-node": "^9.0.0",
     "xml2json": "^0.12.0"
   },
   "devDependencies": {
@@ -38,6 +37,7 @@
     "jest": "^26.4.2",
     "supertest": "^4.0.2",
     "ts-jest": "^26.3.0",
+    "ts-node": "^9.0.0",
     "ts-node-dev": "^1.0.0-pre.62",
     "typescript": "^4.0.2"
   }

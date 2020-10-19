@@ -55,7 +55,7 @@ class ProductController {
 
     async create(request: Request, response: Response)
     {
-        const { name, description, value, stock = 0, salesman_id } = request.body;
+        const { name, description, value, stock = 0, address_id, salesman_id, formato, peso, comprimento, altura, largura, diametro } = request.body;
         const salespeople = await database.select('*').from('salespeople');
         
         if (!salespeople.find(element => element.id == salesman_id)) return response.status(406).json({
@@ -66,16 +66,28 @@ class ProductController {
         const now = new Date;
         const register_date = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 
-        if (!name || !description || !value) return response.status(406).json({
-            error: 406,
-            message: 'Invalid Credentials'
-        });
+        if (!name || !description || !value)
+        {
+            return response.status(406).json({
+                error: 406,
+                message: 'Invalid Credentials'
+            });
+        }
 
         const trx = await database.transaction();
-        const data = { name, description, value, register_date, stock, salesman_id };
-        await trx('products').insert(data);
+        const data = { name, description, value, register_date, stock, salesman_id, formato, peso, comprimento, altura, largura, diametro, address_id };
+        const created = await trx('products').insert(data);
 
-        trx.commit();
+        if (created.length == 0) 
+        {
+            await trx.rollback();
+            return response.status(406).json({
+                code: 406,
+                message: "Product Not Created"
+            })
+        }
+
+        await trx.commit();
         return response.status(201).json();
     }
 
@@ -101,9 +113,10 @@ class ProductController {
             description, 
             value, 
             stock,
+            formato, peso, comprimento, altura, largura, diametro
         } = request.body;
         
-        const data = { name, description, value, stock };
+        const data = { name, description, value, stock, formato, peso, comprimento, altura, largura, diametro };
         const updated = await trx('products').where({ id }).update(data);
         
         if (!updated)
@@ -124,15 +137,19 @@ class ProductController {
         const { id } = request.params;
 
         const trx = await database.transaction();
-
+        
         const deleted = await trx('products').where({ id }).del();
         
-        if (!deleted) return response.status(406).json({
-            error: 406,
-            message: 'Invalid id'
-        });
+        if (!deleted)
+        {
+            await trx.rollback();
+            return response.status(406).json({
+                error: 406,
+                message: 'Invalid id'
+            });
+        }
 
-        trx.commit();
+        await trx.commit();
 
         return response.status(204).json();
     }

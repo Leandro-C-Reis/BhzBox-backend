@@ -73,10 +73,14 @@ class SalesmanController {
 
         const updated = await trx('salespeople').where({ id }).update(data);
         
-        if (!updated) return response.status(406).json({
-            error: 406,
-            message: 'Salesman not founded'
-        });
+        if (!updated)
+        {
+            await trx.rollback();
+            return response.status(406).json({
+                error: 406,
+                message: 'Salesman not founded'
+            });
+        }
 
         await trx.commit();
         return response.status(200).json();

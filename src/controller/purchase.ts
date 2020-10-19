@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import database from '../database/connection';
+import frete from './correiosController';
 
 class PurchaseController 
 {
@@ -61,7 +62,7 @@ class PurchaseController
 
     async create(request : Request, response : Response)
     {
-        const { user_id, product_id, address_id, payment_status } = request.body; 
+        const { user_id, product_id, address_id, payment_status , servico} = request.body; 
         
         if (!user_id || !product_id || !address_id || !payment_status) return response.status(406).json({
             error: 406,
@@ -87,9 +88,29 @@ class PurchaseController
             message: "This address does not correspond to the user"
         });
         
-        const freight_value = 10; //default = 10, because is missing correios API connection
-        const uniq_value = (await trx('products').select('value').where({ id: product_id }))[0].value; 
-        const total_value = freight_value + uniq_value;
+        
+        const product = (await trx('products').select('*').where('id', product_id))[0];
+        const salesman_address = (await trx('address').select('*').where('id', product.address_id))[0];
+        const user_address = (await trx('address').select('*').where('id', address_id))[0];
+        
+        const nfreight : any = await frete({
+            'nCdServico': servico, // 04510
+            'sCepOrigem': salesman_address.cep,
+            'sCepDestino': user_address.cep,
+            'nVlPeso': product.peso, // 1 em Kg
+            'nCdFormato': product.formato, // 1
+            'nVlComprimento': product.comprimento, // 20 em Cm
+            'nVlAltura': product.altura, // 2
+            'nVlLargura': product.largura, // 20
+            'nVlDiametro': product.diametro, // 0
+            'sCdMaoPropria': 'n',
+            'nVlValorDeclarado': 0,
+            'sCdAvisoRecebimento': 'n'
+        });
+        
+        const freight = parseFloat(nfreight.Servicos.cServico.Valor.replace(',', '.'))
+        const uniq_value = (await trx('products').select('value').where({ id: product_id }))[0].value;
+        const total_value :number = freight + uniq_value;
         
         const data = {
             user_id,
@@ -99,11 +120,12 @@ class PurchaseController
             send: false,
             receivment: false,
             tracking_code: null,
-            freight_value,
+            freight_value: freight,
             uniq_value,
             total_value,
             integration_id: null,
             register_date,
+            servico,
             status: 'payment in process'
         }
 
@@ -118,8 +140,8 @@ class PurchaseController
             });
         }
 
-        trx.commit();
-
+        await trx.commit();
+        
         return response.status(200).json(data);
     }
 

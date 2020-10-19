@@ -5,8 +5,8 @@ async function correios (request: object)
 {
     // const request = {
     //     'nCdServico': '04510',
-    //     'sCepOrigem': '32073540',
-    //     'sCepDestino': '04547000',
+    //     'sCepOrigem': '00000000',
+    //     'sCepDestino': '00000000',
     //     'nVlPeso': '1', // em Kg
     //     'nCdFormato': 1,
     //     'nVlComprimento': 20, // em Cm
@@ -21,7 +21,7 @@ async function correios (request: object)
     let urlParameters = Object.entries(request).map(e => e.join('=')).join('&');
     const xml = await api.get(`nCdEmpresa&sDsSenha&${urlParameters}&StrRetorno=xml&nIndicaCalculo=3`);
     
-    return parser.toJson(xml.data);
+    return parser.toJson(xml.data, { object : true });
 }
 
 export default correios;
