@@ -9,6 +9,7 @@ export async function up(knex: Knex) {
         table.string('district').notNullable();
         table.string('street');
         table.string('number');
+        table.string('complement');
         table.date('register_date').notNullable();
     });
 }

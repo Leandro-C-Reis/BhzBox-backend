@@ -10,7 +10,7 @@ export async function up(knex: Knex) {
         table.date('register_date').notNullable();
         table.date('birth_date');
         table.string('cpf').unique();
-        table.string('cellphone');
+        table.string('cellphone', 14);
     });
 }
 
