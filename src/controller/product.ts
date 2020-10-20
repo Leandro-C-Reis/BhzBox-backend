@@ -48,9 +48,44 @@ class ProductController {
         response.status(200).json(products);
     }
 
-    async show_highlighted(request: Request, response: Response)
+    async show_featured(request: Request, response: Response)
     {
+        const trx = await database.transaction();
+        const ids = await trx('featured').select('product_id');
         
+        let products = [];
+        
+        for (let arr of ids)
+        {  
+            products.push((await trx('products').select('*').where('id', arr.product_id))[0]);
+        }
+        
+        await trx.commit();
+        return response.status(200).json(products);
+    }
+
+    async crete_featured_products(request: Request, response: Response)
+    {
+        const ids = request.body;
+        const trx = await database.transaction();
+
+        for (let obj of ids)
+        {
+            const exist = await trx('products').select('id').where('id', obj.product_id).first();
+            if (!exist)
+            {
+                await trx.rollback();
+                return response.status(406).json({
+                    code: 406,
+                    message: "Product ID not exist"
+                });
+            }
+        }
+        
+        const inserted = await trx('featured').insert(ids);
+
+        await trx.commit();
+        return response.status(201).json();
     }
 
     async create(request: Request, response: Response)

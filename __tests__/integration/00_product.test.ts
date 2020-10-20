@@ -28,8 +28,8 @@ describe('Products tests with valid params', () => {
         expect(response.status).toBe(200);
     });
 
-    it('Should list highlighted products', async () => {
-        const response : any = await request(app).get('/product/list/highlighted');
+    it('Should list featured products', async () => {
+        const response : any = await request(app).get('/product/featured');
 
         expect(response.status).toBe(200);
     });
