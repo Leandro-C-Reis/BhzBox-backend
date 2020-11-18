@@ -3,3 +3,5 @@ docs/index.html
 __tests__/coverage/
 .env.test
 .env
+package-lock.json
+yarn.lock
