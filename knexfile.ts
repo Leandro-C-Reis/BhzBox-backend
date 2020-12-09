@@ -5,8 +5,10 @@ dotenv.config({
   path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
 });
 
+console.log(`Loaded: ${process.env.NODE_ENV}`);
+
 module.exports = {
-  client: 'pg',
+  client: 'mysql2',
   connection: {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,

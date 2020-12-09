@@ -1,4 +1,4 @@
-import parser from  'xml2json';
+import convert from  'xml-js';
 import api from '../services/correiosAPI';
 
 async function correios (request: object)
@@ -21,7 +21,7 @@ async function correios (request: object)
     let urlParameters = Object.entries(request).map(e => e.join('=')).join('&');
     const xml = await api.get(`nCdEmpresa&sDsSenha&${urlParameters}&StrRetorno=xml&nIndicaCalculo=3`);
     
-    return parser.toJson(xml.data, { object : true });
+    return convert.xml2js(xml.data, { compact: true });
 }
 
 export default correios;

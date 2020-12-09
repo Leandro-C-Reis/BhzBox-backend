@@ -108,7 +108,7 @@ class PurchaseController
             'sCdAvisoRecebimento': 'n'
         });
         
-        const freight = parseFloat(nfreight.Servicos.cServico.Valor.replace(',', '.'))
+        const freight = parseFloat(nfreight.Servicos.cServico.Valor._text.replace(',', '.'))
         const uniq_value = (await trx('products').select('value').where({ id: product_id }))[0].value;
         const total_value :number = freight + uniq_value;
         
@@ -178,7 +178,7 @@ class PurchaseController
                 break;
         }
         
-        const data = { payment_status, send, receivment, tracking_code };
+        const data = { payment_status, send, receivment, tracking_code, status };
         const updated = await trx('purchases').where({ id }).update(data);
         if (!updated)
         {

@@ -8,7 +8,7 @@ dotenv.config({
 const port = parseInt(process.env.DB_PORT = "");
 
 const connection = knex({
-  client: 'pg',
+  client: 'mysql2',
   connection: {
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
