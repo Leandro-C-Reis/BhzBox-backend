@@ -72,7 +72,7 @@ class AddressController
         
         const trx = await database.transaction();
         
-        const created = await trx('address').insert(data).returning('id');
+        const created = await trx('address').insert(data);
 
         if (!created || created.length == 0) 
         {

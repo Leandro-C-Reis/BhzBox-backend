@@ -26,10 +26,6 @@ class ProductController {
     async show_of_salesman(request: Request, response: Response)
     {
         const { id } = request.params;
-        if (!id) return response.status(406).json({
-            error: 406,
-            message: 'product not founded'
-        });
 
         const existId = await database('salespeople').select('id').where({ id });
         if (!existId || existId.length == 0) return response.status(406).json({
@@ -40,8 +36,8 @@ class ProductController {
         const all = await database.select('*').from('products'); 
         const products = all.filter(element => element.salesman_id == id);
         
-        if (!products) return response.status(406).json({
-            error: 406,
+        if (products.length == 0) return response.status(404).json({
+            status: 404,
             message: 'Products not founded'
         });
 

@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 import ProductController from './controller/product';
 import UserController from './controller/user';
@@ -13,6 +13,13 @@ const userController = new UserController;
 const salesmanController = new SalesmanController;
 const purchaseController = new PurchaseController;
 const addressController = new AddressController;
+
+routes.get('/', async (request: Request, response: Response) => {
+    return response.status(200).json({
+        message: 'This is default route of boxVendas API',
+        _body: request.body
+    });
+});
 
 // product routes
 routes.get('/product/list', productController.index);

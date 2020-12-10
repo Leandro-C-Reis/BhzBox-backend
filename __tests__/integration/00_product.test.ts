@@ -54,6 +54,12 @@ describe('Products tests with valid params', () => {
         expect(response.status).toBe(201);
     });
 
+    // it('Should not receive products with valid seller', async () => {
+    //     const response : any = await request(app).get('/product/salesman/2');
+
+    //     expect(response.status).toBe(404);
+    // });
+
     it('Should update a product', async () => {
         const response : any = await request(app).put('/product/update/1')
         .send({
